@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Presentación Responsive</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    .slides {
+        display: flex;
+        width: 300vw; /* 3 diapositivas */
+        transition: transform 0.6s ease;
+    }
+
+    .slide {
+        width: 100vw;
+        height: 100vh;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        color: white;
+        font-size: clamp(1.5rem, 6vw, 3rem); /* RESPONSIVE */
+        font-weight: bold;
+    }
+
+    #s1 { background: #1e88e5; }
+    #s2 { background: #43a047; }
+    #s3 { background: #e53935; }
+
+    nav {
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background: rgba(0,0,0,0.4);
+        color: white;
+        backdrop-filter: blur(4px);
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+
+    /* --- Mejoras para celular --- */
+    @media (max-width: 600px) {
+        button {
+            padding: 14px 24px;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="slides" id="slides">
+    <div class="slide" id="s1">Diapositiva 1</div>
+    <div class="slide" id="s2">Diapositiva 2</div>
+    <div class="slide" id="s3">Diapositiva 3</div>
+</div>
+
+<nav>
+    <button onclick="go(0)">1</button>
+    <button onclick="go(1)">2</button>
+    <button onclick="go(2)">3</button>
+</nav>
+
+<script>
+    function go(n) {
+        document.getElementById("slides").style.transform =
+            `translateX(-${n * 100}vw)`;
+    }
+</script>
+
+</body>
+</html>
