@@ -1,184 +1,503 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Servicios Web - Presentación</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Servicios Web — Presentación</title>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+  :root{
+    --bg: #0d1117;
+    --card: #0f1724;
+    --muted: #9aa4b2;
+    --accent: #0ea5a4;
+    --accent-2: #6366f1;
+    --text: #e6eef6;
+    --glass: rgba(255,255,255,0.06);
+  }
+  [data-theme="light"]{
+    --bg: #f6f8fb;
+    --card: #ffffff;
+    --muted: #475569;
+    --accent: #0b7285;
+    --accent-2: #4f46e5;
+    --text: #0b1220;
+    --glass: rgba(11,18,32,0.06);
+  }
 
-    body {
-        font-family: "Segoe UI", Arial, sans-serif;
-        overflow: hidden;
-        background: #0d1117;
-    }
+  /* Reset */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    background:linear-gradient(180deg,var(--bg), #071024 120%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
 
-    .slides {
-        display: flex;
-        width: 500vw; /* 5 diapositivas */
-        height: 100vh;
-        transition: transform 0.6s cubic-bezier(.25,.8,.25,1);
-    }
+  /* Layout */
+  .viewer{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 
-    .slide {
-        width: 100vw;
-        height: 100vh;
-        flex-shrink: 0;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: white;
-        gap: 20px;
-    }
+  .slides{
+    display:flex;
+    width:100%;
+    height:100%;
+    transition:transform 0.6s cubic-bezier(.22,.9,.3,1);
+    will-change:transform;
+  }
 
-    .title {
-        font-size: clamp(2rem, 7vw, 4rem);
-        font-weight: bold;
-    }
+  .slide{
+    width:100vw;
+    height:100vh;
+    flex:0 0 100%;
+    padding:clamp(18px,4vw,48px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    gap:1.2rem;
+    background:linear-gradient(135deg,var(--card), rgba(0,0,0,0.02));
+    border-radius:18px;
+    margin:0;
+    position:relative;
+    overflow:hidden;
+  }
 
-    .text {
-        font-size: clamp(1rem, 4vw, 1.7rem);
-        max-width: 850px;
-        line-height: 1.45;
-    }
+  /* Visual zones */
+  .title{ font-size:clamp(1.6rem,5vw,3.2rem); font-weight:700; letter-spacing:-0.02em; }
+  .subtitle{ font-size:clamp(0.9rem,2.6vw,1.15rem); color:var(--muted); max-width:900px; line-height:1.5;}
+  .content{ font-size:clamp(0.95rem,3.2vw,1.3rem); max-width:960px; line-height:1.5; color:var(--text) }
 
-    #s1 { background: #1e293b; }
-    #s2 { background: #0f766e; }
-    #s3 { background: #4338ca; }
-    #s4 { background: #7c2d12; }
-    #s5 { background: #1e3a8a; }
+  /* Portada styling */
+  .hero {
+    width:100%;
+    display:flex;
+    gap:24px;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    padding: 20px;
+  }
+  .hero .kicker{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:8px 14px;
+    border-radius:999px;
+    background:var(--glass);
+    color:var(--muted);
+    font-weight:600;
+    font-size:0.95rem;
+  }
+  .hero .big{
+    font-size:clamp(2rem,7vw,4.5rem);
+    line-height:1;
+    font-weight:800;
+    margin-top:6px;
+    text-wrap:balance;
+  }
+  .hero p{ max-width:880px; color:var(--muted) }
 
-    nav {
-        position: fixed;
-        bottom: 20px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        z-index: 10;
-    }
+  /* cards / media */
+  .media{
+    width:100%;
+    max-width:1000px;
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-radius:12px;
+    padding:16px;
+    min-width:220px;
+    flex:1 1 260px;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+    text-align:left;
+  }
+  .card h4{ margin:0 0 6px 0; font-size:1.05rem }
+  .card p{ margin:0; color:var(--muted); font-size:0.95rem }
 
-    button {
-        padding: 14px 22px;
-        font-size: 1rem;
-        cursor: pointer;
-        border: none;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.15);
-        color: white;
-        backdrop-filter: blur(6px);
-        transition: 0.2s ease;
-    }
+  /* media examples (image/video) */
+  .img-sample{ width:100%; border-radius:10px; display:block; object-fit:cover; height:180px; background:#001; }
+  video{ width:100%; border-radius:10px; height:auto; max-height:320px; }
 
-    button:hover {
-        background: rgba(255,255,255,0.3);
-    }
-    button:active {
-        transform: scale(0.92);
-    }
+  /* Controls */
+  .controls{
+    position:fixed;
+    bottom:18px;
+    left:18px;
+    right:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    pointer-events:none;
+  }
+  .left-controls, .right-controls{ pointer-events:auto; display:flex; gap:10px; align-items:center}
+  .btn{
+    background:var(--glass);
+    border:none;
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 14px rgba(2,6,23,0.3);
+  }
+  .btn:active{ transform:translateY(1px) scale(.995) }
 
-    @media (max-width: 600px) {
-        .slide { padding: 20px; }
-        button {
-            padding: 16px 26px;
-            font-size: 1.1rem;
-        }
-    }
+  .dot{
+    width:10px; height:10px; border-radius:50%;
+    background:rgba(255,255,255,0.12);
+  }
+  .dot.active{ background:var(--accent) }
+
+  .progress{
+    height:8px;
+    width:340px;
+    background:rgba(255,255,255,0.06);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .progress > i{
+    display:block;
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    border-radius:999px;
+    transition:width 0.45s cubic-bezier(.2,.9,.25,1);
+  }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    top:18px;
+    right:18px;
+    padding:10px 14px;
+    border-radius:10px;
+    background:var(--glass);
+    color:var(--muted);
+    font-weight:600;
+    backdrop-filter: blur(6px);
+  }
+
+  /* Page indicators (for small screens) */
+  .pager{
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  /* Animations */
+  .anim-fade{ animation: fadeIn .7s ease both }
+  .anim-zoom{ animation: zoomIn .7s cubic-bezier(.22,.9,.3,1) both }
+  .anim-slideUp{ animation: slideUp .6s cubic-bezier(.22,.9,.3,1) both }
+
+  @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+  @keyframes zoomIn{ from{opacity:0; transform:scale(.96)} to{opacity:1; transform:none} }
+  @keyframes slideUp{ from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
+
+  /* Responsive tweaks */
+  @media (max-width:900px){
+    .card{ min-width:200px }
+    .hero .big{ font-size:clamp(1.6rem,9vw,3rem) }
+  }
+  @media (max-width:600px){
+    .controls{ bottom:12px; left:12px; right:12px; }
+    .progress{ width:170px }
+    .card{ min-width:100% }
+    .title{ font-size:clamp(1.25rem,6vw,2rem) }
+    .subtitle{ font-size:0.95rem }
+    .slide{ border-radius:0; padding:14px 12px }
+  }
+
+  /* Accessibility focus */
+  .btn:focus{ outline:2px solid rgba(99,102,241,0.18); outline-offset:2px }
 </style>
 </head>
+<body data-theme="dark">
 
-<body>
-
-<div class="slides" id="slides">
-
-    <!-- DIAPO 1 -->
-    <div class="slide" id="s1">
-        <div class="title">Servicios Web</div>
-        <div class="text">
-            Presentación académica desarrollada para comprender los fundamentos, aplicaciones y 
-            herramientas esenciales que permiten construir soluciones digitales basadas en la web.
+<div class="viewer" aria-live="polite">
+  <div class="slides" id="slides" role="region" aria-label="Presentación — Servicios Web">
+    <!-- Slide 1: Portada -->
+    <section class="slide" data-index="0" aria-hidden="false" tabindex="-1" id="slide-0">
+      <div class="hero anim-zoom">
+        <div class="kicker">Clase: Servicios Web — Exposición</div>
+        <div class="big">Desarrollar, utilizar y gestionar aplicaciones informáticas basadas en servicios web</div>
+        <p class="subtitle">Plantilla académica responsive con soporte multimedia, navegación por teclado y táctil, y modo claro/oscuro. Diseñada para exposiciones universitarias.</p>
+        <div class="media">
+          <div class="card anim-slideUp">
+            <h4>Datos del curso</h4>
+            <p>Facultad: Educación Secundaria — Especialidad: Computación e Informática</p>
+          </div>
+          <div class="card anim-slideUp">
+            <h4>Docente / Proyecto</h4>
+            <p>Plantilla creada por Brayan — Universidad Nacional Federico Villarreal</p>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- DIAPO 2 -->
-    <div class="slide" id="s2">
+    <!-- Slide 2: Definición -->
+    <section class="slide" data-index="1" aria-hidden="true" tabindex="-1" id="slide-1">
+      <div class="anim-fade">
         <div class="title">¿Qué son los Servicios Web?</div>
-        <div class="text">
-            Son sistemas de software diseñados para intercambiar información mediante estándares abiertos 
-            como HTTP, XML o JSON. Facilitan la interoperabilidad entre aplicaciones y plataformas 
-            sin importar el lenguaje de programación o sistema operativo.
+        <div class="content">
+          Los servicios web son componentes de software que permiten el intercambio de información entre sistemas heterogéneos
+          mediante protocolos y formatos estándar (HTTP, JSON, XML). Su adopción facilita la integración, la escalabilidad y la interoperabilidad.
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- DIAPO 3 -->
-    <div class="slide" id="s3">
-        <div class="title">Tipos de Servicios Web</div>
-        <div class="text">
-            <strong>• SOAP:</strong> Utiliza XML y protocolos estrictos para garantizar seguridad y estructura.<br>
-            <strong>• REST:</strong> Basado en HTTP, ligero, rápido y ampliamente utilizado en la web moderna.<br>
-            <strong>• API Web:</strong> Interfaz que permite que aplicaciones externas consuman funciones o datos.
+    <!-- Slide 3: Tipos -->
+    <section class="slide" data-index="2" aria-hidden="true" tabindex="-1" id="slide-2">
+      <div class="anim-fade">
+        <div class="title">Tipos principales</div>
+        <div class="media">
+          <div class="card anim-slideUp">
+            <h4>SOAP</h4>
+            <p>Protocolo basado en XML, con contrato estricto (WSDL). Adecuado para entornos que requieren transacciones y estándares fuertes.</p>
+          </div>
+          <div class="card anim-slideUp">
+            <h4>REST / HTTP</h4>
+            <p>Estilo arquitectónico ligero; emplea recursos URL y métodos HTTP; muy usado en aplicaciones modernas.</p>
+          </div>
+          <div class="card anim-slideUp">
+            <h4>GraphQL / APIs modernas</h4>
+            <p>Consultas flexibles y eficiencia en la transferencia de datos; ideal para UIs ricas y consumo móvil.</p>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- DIAPO 4 -->
-    <div class="slide" id="s4">
-        <div class="title">Herramientas y Tecnologías</div>
-        <div class="text">
-            <strong>HTML y CSS:</strong> Base de la presentación y estructura visual.<br>
-            <strong>JavaScript:</strong> Control de eventos, navegación y dinámica.<br>
-            <strong>JSON / XML:</strong> Formatos de intercambio de datos.<br>
-            <strong>Frameworks:</strong> React, Vue, Angular para consumo de APIs.
+    <!-- Slide 4: Herramientas -->
+    <section class="slide" data-index="3" aria-hidden="true" tabindex="-1" id="slide-3">
+      <div class="anim-zoom">
+        <div class="title">Herramientas y tecnologías</div>
+        <div class="content">
+          HTML/CSS/JS para interfaces; Postman y cURL para pruebas; Node/Express, Django o Spring para crear servicios; JSON y OpenAPI para documentación.
         </div>
-    </div>
+        <div class="media" style="margin-top:16px">
+          <div class="card">
+            <h4>Pruebas</h4>
+            <p>Postman, Insomnia, pruebas unitarias y contract testing.</p>
+          </div>
+          <div class="card">
+            <h4>Documentación</h4>
+            <p>Swagger / OpenAPI para describir endpoints y contratos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- DIAPO 5 -->
-    <div class="slide" id="s5">
+    <!-- Slide 5: Ejemplo multimedia -->
+    <section class="slide" data-index="4" aria-hidden="true" tabindex="-1" id="slide-4">
+      <div class="anim-fade">
+        <div class="title">Ejemplo: consumo de API</div>
+        <div class="content">
+          A continuación un ejemplo ilustrativo (video demo). Puedes sustituir el `src` por tu propio archivo o enlace.
+        </div>
+        <div style="width:100%; max-width:900px; margin-top:12px;">
+          <!-- placeholder video: sustituir por ruta real si hace falta -->
+          <video controls muted preload="metadata" poster="" aria-label="Demo consumo de API">
+            <source src="" type="video/mp4">
+            Tu navegador no soporta video HTML5. Inserta una URL válida en el código.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Conclusión -->
+    <section class="slide" data-index="5" aria-hidden="true" tabindex="-1" id="slide-5">
+      <div class="anim-zoom">
         <div class="title">Conclusiones</div>
-        <div class="text">
-            Los servicios web permiten integrar aplicaciones, automatizar procesos y ampliar la funcionalidad 
-            de cualquier sistema educativo, empresarial o digital. Dominar estas herramientas abre puertas 
-            hacia el desarrollo moderno y profesional.
+        <div class="content">
+          Dominar servicios web es esencial para la construcción de soluciones integradas. Permiten dotar a sistemas educativos y empresariales de interoperabilidad y escalabilidad.
         </div>
-    </div>
+      </div>
+    </section>
+
+    <!-- Slide 7: Créditos / Footer grande -->
+    <section class="slide" data-index="6" aria-hidden="true" tabindex="-1" id="slide-6">
+      <div class="anim-fade">
+        <div class="title">Gracias</div>
+        <div class="subtitle">Preguntas — Discusión — Referencias</div>
+        <div style="margin-top:18px; color:var(--muted); font-size:0.98rem">Referencias: RFCs, OpenAPI, documentación oficial de REST/GraphQL y artículos académicos relevantes.</div>
+      </div>
+    </section>
+  </div>
 </div>
 
-<nav>
-    <button onclick="go(0)">1</button>
-    <button onclick="go(1)">2</button>
-    <button onclick="go(2)">3</button>
-    <button onclick="go(3)">4</button>
-    <button onclick="go(4)">5</button>
-</nav>
+<!-- Controls: left and right -->
+<div class="controls" role="toolbar" aria-label="Controles de navegación">
+  <div class="left-controls">
+    <button class="btn" id="prevBtn" aria-label="Anterior (flecha izquierda)">◀</button>
+    <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+    <div class="pager" id="pagerSmall" aria-hidden="true"></div>
+  </div>
+
+  <div class="right-controls">
+    <button class="btn" id="themeToggle" aria-pressed="false" title="Cambiar tema">Modo</button>
+    <button class="btn" id="nextBtn" aria-label="Siguiente (flecha derecha)">▶</button>
+  </div>
+</div>
+
+<!-- Small floating footer with user/university -->
+<footer role="contentinfo">
+  Brayan — Universidad Nacional Federico Villarreal
+</footer>
 
 <script>
-    let index = 0;
-    const slides = document.getElementById("slides");
-    const total = 5;
+  /* ========== Config y estado ========== */
+  const slidesEl = document.getElementById('slides');
+  const totalSlides = slidesEl.children.length;
+  let index = 0;
+  const progress = document.getElementById('progressBar');
+  const pagerSmall = document.getElementById('pagerSmall');
 
-    function go(n) {
-        index = n;
-        slides.style.transform = `translateX(-${index * 100}vw)`;
+  /* Inicia paginador (dots) */
+  for(let i=0;i<totalSlides;i++){
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i===0 ? ' active' : '');
+    dot.setAttribute('data-i', i);
+    dot.setAttribute('role','button');
+    dot.setAttribute('aria-label', 'Ir a la diapositiva '+(i+1));
+    dot.tabIndex = 0;
+    dot.addEventListener('click', ()=> go(i));
+    dot.addEventListener('keydown', e => { if(e.key==='Enter') go(i) });
+    pagerSmall.appendChild(dot);
+  }
+
+  function updateUI(){
+    slidesEl.style.transform = `translateX(-${index * 100}vw)`;
+    // aria-hidden toggles
+    Array.from(slidesEl.children).forEach((s,i)=>{
+      s.setAttribute('aria-hidden', i===index ? 'false' : 'true');
+      s.tabIndex = i===index ? -1 : -1;
+    });
+    // progress
+    const pct = Math.round(((index+1) / totalSlides) * 100);
+    progress.style.width = pct + '%';
+    // dots
+    Array.from(pagerSmall.children).forEach((d,i)=>{
+      d.classList.toggle('active', i===index);
+    });
+  }
+
+  /* Navegación */
+  function go(n){
+    index = Math.max(0, Math.min(totalSlides-1, n));
+    updateUI();
+    // focus on slide for screen readers
+    const cur = document.querySelector(`[data-index="${index}"]`);
+    if(cur) cur.focus();
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', ()=> go(index-1));
+  document.getElementById('nextBtn').addEventListener('click', ()=> go(index+1));
+
+  /* Teclado */
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowRight' || e.key === 'PageDown') go(index+1);
+    if(e.key === 'ArrowLeft' || e.key === 'PageUp') go(index-1);
+    if(e.key === 'Home') go(0);
+    if(e.key === 'End') go(totalSlides-1);
+    if(e.key === 'f') toggleFullScreen();
+  });
+
+  /* Swipe táctil (mejorado) */
+  let startX = 0, startY = 0, isMoving = false;
+  document.addEventListener('touchstart', (e)=>{
+    if(e.touches.length === 1){
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isMoving = true;
     }
+  }, {passive:true});
 
-    let startX = 0;
+  document.addEventListener('touchmove', (e)=>{
+    // prevent vertical scroll interference for clear horizontal swipe detection on small devices
+    if(!isMoving) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if(Math.abs(dy) > Math.abs(dx)) { /* vertical scroll — ignore */ isMoving=false; return; }
+  }, {passive:true});
 
-    document.addEventListener("touchstart", e => {
-        startX = e.touches[0].clientX;
-    });
+  document.addEventListener('touchend', (e)=>{
+    if(!isMoving) return;
+    const endX = e.changedTouches[0].clientX;
+    const dx = startX - endX;
+    if(dx > 60) go(index+1);
+    else if(dx < -60) go(index-1);
+    isMoving = false;
+  });
 
-    document.addEventListener("touchend", e => {
-        let endX = e.changedTouches[0].clientX;
+  /* Theme toggle (claro/oscuro) */
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', ()=>{
+    const root = document.body;
+    const isDark = root.getAttribute('data-theme') !== 'light';
+    root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+  });
 
-        if (startX - endX > 50 && index < total - 1) go(index + 1);
-        if (endX - startX > 50 && index > 0) go(index - 1);
-    });
+  /* Fullscreen helper */
+  function toggleFullScreen(){
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen().catch(()=>{/* no-op */});
+    } else {
+      document.exitFullscreen().catch(()=>{/* no-op */});
+    }
+  }
+
+  /* Inicializa */
+  // Set progress bar container actual width to start (for animation)
+  function initProgress(){
+    const pct = Math.round(((index+1) / totalSlides) * 100);
+    progress.style.width = pct + '%';
+  }
+  initProgress();
+
+  /* Mejora: permitir reemplazar media dinámicamente (ej. video src o imagen) */
+  // Ejemplo: document.querySelector('#slide-4 video source').src = 'ruta_a_video.mp4';
+
+  /* Accesibilidad: anunciar cambio de diapositiva con SR */
+  const liveRegion = document.createElement('div');
+  liveRegion.setAttribute('aria-live','polite');
+  liveRegion.style.position='absolute';
+  liveRegion.style.left='-9999px';
+  document.body.appendChild(liveRegion);
+
+  // Observador simple para cambios de index -> anunciar
+  const announce = (i) => {
+    liveRegion.textContent = `Diapositiva ${i+1} de ${totalSlides}`;
+  };
+
+  // Wrap go() para anunciar
+  const origGo = go;
+  go = function(n){
+    origGo(n);
+    announce(index);
+  };
+
+  // expose go for console debugging if needed
+  window.goSlide = (n) => go(n);
+
+  // initial UI update
+  updateUI();
 </script>
-
 </body>
 </html>
